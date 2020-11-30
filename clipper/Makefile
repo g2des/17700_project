@@ -15,3 +15,4 @@ start_clipper:
 
 stop_clipper:
 	$ ./stop_clipper.py
+
