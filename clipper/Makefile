@@ -8,6 +8,7 @@ MODEL_NAME?=nmtfairseq
 SLO?=1000000
 CONTAINERS=$(shell docker ps -a -q)
 BATCH_SIZE?=-1
+URL=localhost:1337
 ## Shell ENV
 
 all: init_env_aws start_clipper build_model deploy_model
@@ -45,6 +46,9 @@ undeploy_model:
 	@ ${SCRIPTS}/remove_model.py ${APP_NAME} ${MODEL_NAME}
 	# $ echo ${CONTAINERS}
 	# docker rm $(shell docker ps -a -q)
+
+verify_clipper:
+	@ ${SCRIPTS}/verify_clipper.py $(APP_NAME) $(URL)
 
 clean: stop_clipper
 	-docker rm $(shell docker ps -a -q)
