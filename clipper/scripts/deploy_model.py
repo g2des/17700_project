@@ -15,15 +15,17 @@ try:
     app_name = str(sys.argv[3])
     model_name = str(sys.argv[4])
     SLO = eval(sys.argv[5])
+    batch_size = eval(sys.argv[6])
     assert type(is_cuda) == bool
     assert type(model_name) == str
     assert type(app_name) == str
     assert type(model_path) == str
     assert type(SLO) == int
-    print("Evaluating with ", is_cuda, model_path, app_name, model_name, SLO)
+    assert type(batch_size) == int
+    print("Evaluating with ", is_cuda, model_path, app_name, model_name, SLO, batch_size)
 except Exception as e:
     print("ERROR!!"+str(e))
-    print("USAGE:\n\tpython build_deploy.py <True|False> <model_path> <app_name> <model_name> <SLO>")
+    print("USAGE:\n\tpython build_deploy.py <True|False> <model_path> <app_name> <model_name> <SLO> <batch_size>")
 
 # Load an En-Fr Transformer model trained on WMT'14 data :
 model = cloudpickle.load(open(model_path ,'rb'))
@@ -44,6 +46,7 @@ deploy_pytorch_model(
     input_type="strings",
     func=translate,
     base_image='custom-image',
+    batch_size=batch_size,
     pytorch_model=model)
 print("MODEL DEPLOYED")
 print("RUNNING APPS:\t\t",clipper_conn.get_all_apps(),

@@ -7,6 +7,7 @@ APP_NAME?=nmt
 MODEL_NAME?=nmtfairseq
 SLO?=1000000
 CONTAINERS=$(shell docker ps -a -q)
+BATCH_SIZE?=-1
 ## Shell ENV
 
 all: init_env_aws start_clipper build_model deploy_model
@@ -38,7 +39,7 @@ build_model:
 
 deploy_model: $(MODEL_PATH) build_custom_image
 	$ echo "Deploying model"
-	$ ${SCRIPTS}/deploy_model.py $(IS_CUDA) $(MODEL_PATH) $(APP_NAME) ${MODEL_NAME} ${SLO}
+	$ ${SCRIPTS}/deploy_model.py $(IS_CUDA) $(MODEL_PATH) $(APP_NAME) ${MODEL_NAME} ${SLO} ${BATCH_SIZE}
 
 undeploy_model:
 	@ ${SCRIPTS}/remove_model.py ${APP_NAME} ${MODEL_NAME}
