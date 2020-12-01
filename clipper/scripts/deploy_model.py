@@ -48,3 +48,8 @@ deploy_pytorch_model(
 print("MODEL DEPLOYED")
 print("RUNNING APPS:\t\t",clipper_conn.get_all_apps(),
     "RUNNING MODELS:",clipper_conn.get_all_models())
+clipper_conn.link_model_to_app( app_name=app_name,model_name=model_name)
+
+print(f"Model {model_name} attached to app {app_name}")
+
+

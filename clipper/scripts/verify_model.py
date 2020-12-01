@@ -1,4 +1,5 @@
-#!/usr/bin/env python\
+#!/usr/bin/env python
+import cloudpickle, sys
 try:
     model_path = str(sys.argv[1])
     print("Evaluating with ",  model_path,)
