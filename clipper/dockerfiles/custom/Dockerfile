@@ -9,7 +9,7 @@ ARG url=https://raw.githubusercontent.com/ucbrise/clipper/develop/containers/pyt
 RUN touch /model_is_ready.check
 RUN apt-get  update &&  apt-get install -y -qq libzmq5 libzmq5-dev redis-server libsodium18 build-essential
 RUN pip install numpy==1.18.1
-RUN pip install -q cloudpickle==0.5.* pyzmq==17.0.* prometheus_client==0.1.* \
+RUN pip install -q cloudpickle==0.5.3 pyzmq==17.0.* prometheus_client==0.1.* \
     pyyaml>=4.2b1 jsonschema==2.6.* redis==2.10.* psutil==5.4.* flask==0.12.2 
 RUN pip install dataclasses hydra-core regex fastBPE zmq requests sacremoses subword_nmt
 RUN pip install git+git://github.com/pytorch/fairseq.git

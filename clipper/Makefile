@@ -8,6 +8,9 @@ MODEL_NAME?=nmtfairseq
 SLO?=1000000
 CONTAINERS=$(shell docker ps -a -q)
 ## Shell ENV
+
+all: init_env_aws start_clipper build_model deploy_model
+
 init_env_local:
 	$ pip install pipenv 
 	$ pipenv install
@@ -16,7 +19,7 @@ init_env_local:
 	start_clipper
 
 init_env_aws:
-	$ pip install clipper_admin cloudpickle git+git://github.com/pytorch/fairseq.git
+	$ pip install clipper_admin cloudpickle==0.5.3 git+git://github.com/pytorch/fairseq.git
 	$ chmod u+x scripts/*.py
 
 build_custom_image:
@@ -33,17 +36,18 @@ build_model:
 	$ ${SCRIPTS}/build_model.py $(IS_CUDA) $(MODEL_PATH)
 	$ ${SCRIPTS}/verify_model.py ${MODEL_PATH}
 
-deploy_model: $(MODEL_PATH) build_custom_image build_model
+deploy_model: $(MODEL_PATH) build_custom_image
 	$ echo "Deploying model"
 	$ ${SCRIPTS}/deploy_model.py $(IS_CUDA) $(MODEL_PATH) $(APP_NAME) ${MODEL_NAME} ${SLO}
 
 undeploy_model:
 	@ ${SCRIPTS}/remove_model.py ${APP_NAME} ${MODEL_NAME}
 	# $ echo ${CONTAINERS}
-	- docker rm $(shell docker ps -a -q)
+	# docker rm $(shell docker ps -a -q)
 
 clean: stop_clipper
-	- docker rm $(shell docker ps -a -q)
-	- docker image prune -a -f
-	@rm ${MODEL_PATH}
+	-docker rm $(shell docker ps -a -q)
+	-docker image prune -a -f
+	-pip uninstall -y clipper_admin cloudpickle fairseq
+	-rm ${MODEL_PATH}
 	

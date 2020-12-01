@@ -11,7 +11,7 @@ except Exception as e:
 
 
 clipper_conn = ClipperConnection(DockerContainerManager())
-
+clipper_conn.connect()
 query_address =clipper_conn.get_query_addr()
 
 headers = {"Content-type": "application/json"}
