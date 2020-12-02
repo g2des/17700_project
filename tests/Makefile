@@ -19,12 +19,12 @@ TORCH_CSV_NAME?=${RESULT_FOLDER}/torch
 TORCH_LOG_FILE?=$(LOGS_FOLDER)/torch_logs
 
 
-CONDITION1 := --users 100 --spawn-rate 10 --run-time 4 --csv-full-history
-CONDITION2 := --users 1000 --spawn-rate 10 --run-time 4 --csv-full-history
-CONDITION3 := --users 5000 --spawn-rate 10 --run-time 4 --csv-full-history
-CONDITION4 := --users 100 --spawn-rate 10 --run-time 4 --csv-full-history
-CONDITION5 := --users 1000 --spawn-rate 100 --run-time 4 --csv-full-history
-CONDITION6 := --users 5000 --spawn-rate 1000 --run-time 4 --csv-full-history
+CONDITION1 := --users 100 --spawn-rate 10 --run-time 600 --csv-full-history
+CONDITION2 := --users 1000 --spawn-rate 10 --run-time 600 --csv-full-history
+CONDITION3 := --users 5000 --spawn-rate 10 --run-time 600 --csv-full-history
+CONDITION4 := --users 100 --spawn-rate 10 --run-time 600 --csv-full-history
+CONDITION5 := --users 1000 --spawn-rate 100 --run-time 600 --csv-full-history
+CONDITION6 := --users 5000 --spawn-rate 1000 --run-time 600 --csv-full-history
 
 init:
 	@pip install locust numpy requests
