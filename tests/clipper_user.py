@@ -35,7 +35,7 @@ class LoginWithUniqueUsersSteps(TaskSet):
 
 class LoginWithUniqueUsersTest(HttpUser):
     tasks = {LoginWithUniqueUsersSteps}
-    host = 'http://ec2-18-219-201-50.us-east-2.compute.amazonaws.com:1337'
+    host = 'http://ec2-3-132-170-187.us-east-2.compute.amazonaws.com:1337'
     # sock = None
     def __init__(self, *args, **kwargs):
         super(LoginWithUniqueUsersTest, self).__init__( *args, **kwargs)
