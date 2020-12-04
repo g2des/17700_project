@@ -11,12 +11,20 @@ logging.info("Reading sentences completed.")
 
 class LoginWithUniqueUsersSteps(TaskSet):
     regex = re.compile('(?<=\[)(.*?)(?=\])')
-
+    MAX_LENGTH = 10
     def on_start(self):
         self.user_id = np.random.randint(len(USER_CREDENTIALS))
         self.users_requests = USER_CREDENTIALS[self.user_id]
         logging.info(f"START : Created user with id {self.user_id}. Remaining {len(USER_CREDENTIALS)} users")
-        self.requests =  [sentences[int(i)] for i in self.users_requests]
+        self.requests = []
+        for i in self.users_requests:
+            sentence = sentences[int(i)].split()
+            if len(sentence) < self.MAX_LENGTH:
+                continue
+            else:
+                self.requests.append(" ".join(sentence[:self.MAX_LENGTH]))
+
+        #   [sentences[int(i)] for i in self.users_requests]
         logging.info(f"START : Total Number of requests :  {len(self.requests)}")
 
     @task
