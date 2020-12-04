@@ -21,7 +21,7 @@ class LoginWithUniqueUsersSteps(TaskSet):
         ## ADD THIS
         self.requests = []
         for i in self.users_requests:
-            sentence = sentences[int(i)].split()
+            sentence = sentences[int(i)%len(self.users_requests)].split()
             if len(sentence) < self.MAX_LENGTH:
                 continue
             else:
@@ -35,7 +35,7 @@ class LoginWithUniqueUsersSteps(TaskSet):
         if len(self.requests) > 0:
             sentence = str([self.requests.pop()])
             response = self.client.post("/nmt/predict", json={'input' : sentence})
-            logging.info(f"TASK : Sent with request {sentence} with {response.json()}")
+            logging.info(f"TASK : Sent with request ##{sentence}## with ##{response.json()}##")
             logging.warn(f"TASK : Number of requests remaining {len(self.requests)}")
         else:
             self.interrupt()
