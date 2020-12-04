@@ -1,5 +1,5 @@
 import csv, logging, requests, re, numpy as np
-from locust import HttpUser, TaskSet, task, constant_pacing
+from locust import HttpUser, TaskSet, task, constant_pacing ##ADD THIS
 
 USER_CREDENTIALS = None
 sentences = None
@@ -11,11 +11,14 @@ logging.info("Reading sentences completed.")
 
 class LoginWithUniqueUsersSteps(TaskSet):
     regex = re.compile('(?<=\[)(.*?)(?=\])')
+    ## ADD THIS
     MAX_LENGTH = 10
+    ## STOP
     def on_start(self):
         self.user_id = np.random.randint(len(USER_CREDENTIALS))
         self.users_requests = USER_CREDENTIALS[self.user_id]
         logging.info(f"START : Created user with id {self.user_id}. Remaining {len(USER_CREDENTIALS)} users")
+        ## ADD THIS
         self.requests = []
         for i in self.users_requests:
             sentence = sentences[int(i)].split()
@@ -23,7 +26,7 @@ class LoginWithUniqueUsersSteps(TaskSet):
                 continue
             else:
                 self.requests.append(" ".join(sentence[:self.MAX_LENGTH]))
-
+        ## STOP
         #   [sentences[int(i)] for i in self.users_requests]
         logging.info(f"START : Total Number of requests :  {len(self.requests)}")
 
@@ -44,8 +47,10 @@ class LoginWithUniqueUsersSteps(TaskSet):
 class LoginWithUniqueUsersTest(HttpUser):
     tasks = {LoginWithUniqueUsersSteps}
     host = 'http://ec2-3-132-170-187.us-east-2.compute.amazonaws.com:1337'
+    ## ADD THIS
     wait_time = constant_pacing(1.0)
-    # sock = None
+    ## STOP
+    # # sock = None
     def __init__(self, *args, **kwargs):
         super(LoginWithUniqueUsersTest, self).__init__( *args, **kwargs)
         logging.info(f"Logging onto {self.host}")
