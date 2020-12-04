@@ -1,5 +1,5 @@
 import csv, logging, requests, re, numpy as np
-from locust import HttpUser, TaskSet, task, constant
+from locust import HttpUser, TaskSet, task, constant_pacing
 
 USER_CREDENTIALS = None
 sentences = None
@@ -44,7 +44,7 @@ class LoginWithUniqueUsersSteps(TaskSet):
 class LoginWithUniqueUsersTest(HttpUser):
     tasks = {LoginWithUniqueUsersSteps}
     host = 'http://ec2-3-132-170-187.us-east-2.compute.amazonaws.com:1337'
-    wait_time = constant(1)
+    wait_time = constant_pacing(1.0)
     # sock = None
     def __init__(self, *args, **kwargs):
         super(LoginWithUniqueUsersTest, self).__init__( *args, **kwargs)
