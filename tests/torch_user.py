@@ -24,7 +24,7 @@ class LoginWithUniqueUsersSteps(TaskSet):
         self.requests = []
         print("list req ", self.users_requests)
         for i in self.users_requests:
-            print("#######3", len(sentences), i)
+            print("#######", len(sentences), i)
             sentence = sentences[int(i)].split()
             if len(sentence) < self.MAX_LENGTH:
                 continue
