@@ -21,7 +21,7 @@ init_env_local:
 	start_clipper
 
 init_env_aws:
-	$ pip install clipper_admin cloudpickle==0.5.3 git+git://github.com/pytorch/fairseq.git
+	$ pip install clipper_admin dataclasses hydra-core fastBPE regex requests sacremoses subword_nmt cloudpickle==0.5.3 git+git://github.com/pytorch/fairseq.git
 	$ chmod u+x scripts/*.py
 
 build_custom_image:
