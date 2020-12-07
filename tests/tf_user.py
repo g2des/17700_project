@@ -2,6 +2,7 @@ import csv, logging, requests, re, numpy as np
 from locust import HttpUser, TaskSet, task, constant_pacing ##ADD THIS
 import json
 import pyonmttok
+import tensorflow as tf
 
 
 USER_CREDENTIALS = None
@@ -21,6 +22,17 @@ class LoginWithUniqueUsersSteps(TaskSet):
     ## ADD THIS
     MAX_LENGTH = 10
     ## STOP
+
+
+    def pad_batch(self, batch_tokens):
+        """Pads a batch of tokens."""
+        lengths = [len(tokens) for tokens in batch_tokens]
+        max_length = max(lengths)
+        for tokens, length in zip(batch_tokens, lengths):
+            if max_length > length:
+                tokens += [""] * (max_length - length)
+        return batch_tokens, lengths, max_length
+    
     def on_start(self):
         self.user_id = np.random.randint(len(USER_CREDENTIALS))
         self.users_requests = USER_CREDENTIALS[self.user_id]
@@ -28,7 +40,8 @@ class LoginWithUniqueUsersSteps(TaskSet):
         ## ADD THIS
         self.requests = []
         for i in self.users_requests:
-            sentence = sentences[int(i)%len(self.users_requests)].split()
+            # sentence = sentences[int(i)%len(self.users_requests)].split()
+            sentence = sentences[int(i)%len(sentences)].split()
             if len(sentence) < self.MAX_LENGTH:
                 continue
             else:
@@ -42,7 +55,10 @@ class LoginWithUniqueUsersSteps(TaskSet):
         if len(self.requests) > 0:
             sentence = [self.requests.pop()]
             batch_input = [self.tokenizer.tokenize(text)[0] for text in sentence]
-            request = {"inputs": {"tokens":batch_input, "length":[len(batch_input[0])]}}
+            batch_tokens, lengths, max_length = self.pad_batch(batch_input)
+            batch_size = len(lengths)
+            convert_tf = batch_tokens
+            request = {"inputs": {"tokens":convert_tf, "length":lengths}}
             response = self.client.post("/invocations", json=request)
             logging.info(f"TASK : Sent with request ##{sentence}## with ##{response.json()}##")
             logging.warn(f"TASK : Number of requests remaining {len(self.requests)}")
