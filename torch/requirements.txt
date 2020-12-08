@@ -1,0 +1,6 @@
+fastBPE
+regex
+requests
+sacremoses
+subword_nmt
+fairseq-1.0.0a0+8be488f.tar.gz
